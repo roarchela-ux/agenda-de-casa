@@ -11,3 +11,10 @@
 .room[aria-pressed=true] .room-icon{background:#e2d6eb;color:#5b3f70}
 .room[aria-pressed=true] .room-label{color:#5b3f70}
 @media(max-width:700px){.room{justify-content:flex-start;padding:12px 10px;gap:10px}.room-label{text-align:left}.room-icon{width:42px;height:42px;border-radius:12px}.room .room-icon svg{width:28px;height:28px}}
+
+.catalog-filters{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:16px}
+.catalog-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.catalog-card{display:flex;flex-direction:column;align-items:stretch;min-width:0}
+.catalog-card h2{font-size:1.4rem}.catalog-card .button{margin-top:auto;align-self:flex-start}.catalog-card .row{gap:10px}.catalog-card .chip{white-space:normal}
+.guidance{text-align:left}.guidance summary{font-size:1rem}.guidance p{margin-top:18px}.catalog-stats{margin-top:20px}
+@media(max-width:700px){.catalog-grid,.catalog-filters{grid-template-columns:1fr}.catalog-filters{gap:0}.catalog-card .chip{max-width:calc(100% - 60px)}}
