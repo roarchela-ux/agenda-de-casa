@@ -39,7 +39,7 @@ function appContext(saved={},withoutCatalog=false){
     window:{AGENDA_CATALOG:withoutCatalog?undefined:{version,missions},addEventListener(){}},
     document:{querySelector:()=>element,querySelectorAll:()=>[],documentElement:{style:{setProperty(){}}}},
     localStorage:{getItem:()=>JSON.stringify(saved),setItem(){}},
-    location:{hash:'#hoje'},crypto:{randomUUID:()=> 'test-id'},setTimeout:()=>1,clearTimeout(){},setInterval(){},
+    location:{hash:'#hoje',replace(hash){this.hash=hash}},crypto:{randomUUID:()=> 'test-id'},setTimeout:()=>1,clearTimeout(){},setInterval(){},
   };
   sandbox.document.createElement=()=>({});
   sandbox.document.head={appendChild(script){sandbox.recoveryAsset=script.src;sandbox.window.AGENDA_CATALOG={version,missions};script.onload()}};
@@ -47,26 +47,84 @@ function appContext(saved={},withoutCatalog=false){
   vm.runInContext(fs.readFileSync(path.join(__dirname,'../app.js'),'utf8'),sandbox);
   return sandbox;
 }
-test('suggestions visit every compatible mission before repeating and freeze their instructions',()=>{
-  const sandbox=appContext();
+test('additional suggestions cover each room and time without replacing an active care',()=>{
+  const sandbox=appContext({mission:{title:'Meu cuidado ativo',room:'Sala',minutes:15,remaining:900,started:true}});
   vm.runInContext(`
+    const original=mission;
     for(let r=0;r<rooms.length;r++)for(const duration of [5,15,30]){
-      room=r;minutes=duration;mission=null;
+      room=r;minutes=duration;extraDraft=null;
       const pool=matchingMissions(rooms[r],duration),seen=new Set();
       for(let n=0;n<pool.length;n++){
         newMission();
-        if(seen.has(mission.catalogId))throw new Error('Repeated mission before pool exhaustion');
-        if(mission.room!==rooms[r]||mission.minutes!==duration)throw new Error('Incompatible suggestion');
-        seen.add(mission.catalogId);
-        const template=pool.find(m=>m.id===mission.catalogId);
-        if(mission.directions===template.directions||mission.directions[0]===template.directions[0])throw new Error('Instructions were not snapshotted');
+        if(seen.has(extraDraft.catalogId))throw new Error('Repeated extra before pool exhaustion');
+        if(extraDraft.room!==rooms[r]||extraDraft.minutes!==duration)throw new Error('Incompatible extra');
+        if(mission!==original)throw new Error('Active mission replaced');
+        seen.add(extraDraft.catalogId);
+        const template=pool.find(m=>m.id===extraDraft.catalogId);
+        if(extraDraft.directions===template.directions||extraDraft.directions[0]===template.directions[0])throw new Error('Instructions were not snapshotted');
       }
-      if(seen.size!==pool.length)throw new Error('Missing suggestions');
     }
-    mission.started=true;
+  `,sandbox);
+});
+test('daily rotation reaches all 188 missions, follows weekdays and alternates Tuesday rooms',()=>{
+  const sandbox=appContext();
+  vm.runInContext(`
+    const allSeen=new Set(),perRoom=new Map();
+    for(let w=0;w<104;w++)for(let day=0;day<7;day++){
+      const date=new Date(2026,10,2+w*7+day,12);
+      const result=dailyMissionOn(date),focus=dayFocus(date);
+      if(!result||!focus.rooms.includes(result.room))throw new Error('Daily mission outside weekday focus');
+      if(result.id!==dailyMissionOn(new Date(date.getFullYear(),date.getMonth(),date.getDate(),23,59)).id)throw new Error('Daily suggestion changed during day');
+      if(day===1&&result.room!==(w%2===0?'Cozinha':'Área de serviço'))throw new Error('Tuesday rooms do not alternate');
+      let seen=perRoom.get(result.room)||new Set();
+      if(seen.size===rotationPool(result.room).length)seen=new Set();
+      if(seen.has(result.id))throw new Error('Daily care repeats before its room pool is exhausted');
+      seen.add(result.id);perRoom.set(result.room,seen);allSeen.add(result.id);
+    }
+    if(allSeen.size!==188)throw new Error('Not all missions participate in the daily rotation');
+  `,sandbox);
+});
+test('extra care leaves the daily suggestion stable, and queueing avoids duplicates',()=>{
+  const sandbox=appContext();
+  vm.runInContext(`
+    const date=new Date(2026,10,3,12),original=dailyMissionOn(date).id;
+    room=2;minutes=5;newMission();
+    queueCare(extraDraft,'2026-11-03');queueCare(extraDraft,'2026-11-03');
+    if(plans.length!==1)throw new Error('Duplicate queued care');
+    if(dailyMissionOn(date).id!==original)throw new Error('Extra care changed daily recommendation');
+  `,sandbox);
+});
+test('starting daily care keeps an existing active mission and queues the daily care instead',()=>{
+  const sandbox=appContext({mission:{title:'Cuidado em andamento',room:'Sala',minutes:15,remaining:600,started:true,running:false}});
+  vm.runInContext(`
     const current=mission;
-    newMission();
-    if(current!==mission)throw new Error('Active care was replaced');
+    chooseDaily();chooseDaily();
+    if(mission!==current||mission.remaining!==600)throw new Error('Active care was replaced');
+    if(plans.length!==1||plans[0].dailyDate!==dateKey())throw new Error('Daily care was not queued once');
+    if(!plans[0].directions.length)throw new Error('Daily instructions were lost');
+  `,sandbox);
+});
+test('daily selection preserves its date and instructions and reuses its queued plan',()=>{
+  const sandbox=appContext();
+  vm.runInContext(`
+    const template=dailyMissionOn();
+    const plan=queueCare({...snapshotTemplate(template),dailyDate:dateKey()});
+    chooseDaily();
+    if(mission.planId!==plan.id||mission.dailyDate!==dateKey()||mission.catalogId!==template.id)throw new Error('Daily plan not reused');
+    if(mission.started||mission.running)throw new Error('Daily timer started without consent');
+    const current=mission;chooseDaily();
+    if(mission!==current)throw new Error('Opening daily care resets saved progress');
+  `,sandbox);
+});
+test('catalogue links are removed and old routes show only the method and app indication',()=>{
+  const sandbox=appContext();
+  vm.runInContext(`
+    if(today().includes('#catalogo')||chooser().includes('#catalogo')||method().includes('#catalogo'))throw new Error('Catalogue is still exposed in navigation');
+    if(!method().includes('Métodos da RoArchela (app)'))throw new Error('Missing app indication');
+    location.hash='#catalogo';render();
+    if(location.hash!=='#metodo')throw new Error('Old catalogue URL was not redirected');
+    location.hash='#cuidado/42';render();
+    if(location.hash!=='#metodo')throw new Error('Old care detail URL was not redirected');
   `,sandbox);
 });
 test('existing records and legacy active care remain intact when catalogue is added',()=>{
