@@ -47,3 +47,11 @@ Verificação: `node --check projects.js`, `node --check app.js` e `node --test 
 O site inclui `manifest.webmanifest`, ícones PNG de 192 e 512 pixels, ícone Apple de 180 pixels e favicon de 32 pixels. O atalho se chama **Agenda de Casa** e inicia em `#ambientes`, com escopo restrito a este site. A abertura independente depende do suporte do navegador; não há promessa de funcionamento offline.
 
 Arte original do ícone: `assets/agenda-de-casa-icon.png`, criada com a ferramenta integrada de geração de imagens a partir da personagem existente, sem substituir a imagem do cabeçalho. Prompt: criar um ícone quadrado para a tela inicial de Agenda de Casa, preservando cabelo castanho com mecha fúcsia, óculos escuros e roupa violeta da personagem; retrato centralizado de cabeça e ombros, legível em tamanho pequeno, fundo lavanda claro opaco até as bordas, sem texto, moldura ou cantos arredondados externos, com margem para recorte pelo sistema do celular. Os demais tamanhos são reduções da arte selecionada.
+
+## Imagens “A casa muda com a vida”
+
+A página Ambientes e projetos associa uma comparação antes/depois diretamente ao título. As imagens ficam lado a lado em telas largas e uma abaixo da outra no celular, mantendo a proporção 3:2. A imagem anterior de sala continua na página Hoje.
+
+Arquivos: `assets/cantinho-antes.jpg` e `assets/cantinho-depois.jpg`. A comparação é identificada como ilustração criada com inteligência artificial, sem pessoas e sem representar um projeto ou cliente real. A legenda trata o depois como um novo ponto de partida para o ciclo contínuo.
+
+Ferramenta: geração de imagens integrada. Prompt da imagem depois: fotografia editorial realista de um cantinho de leitura em uma sala brasileira acolhedora, sem pessoas, com poltrona, mesinha ao alcance, livro aberto, óculos, manta lavanda e objetos já existentes, luz natural, mesma proporção 3:2 e sem texto. Prompt da imagem antes: editar a imagem depois preservando a mesma sala, móveis, iluminação e enquadramento; afastar a mesinha, colocar livros e óculos no assento e deixar a manta menos acomodada, sem sujeira ou desordem exagerada.
