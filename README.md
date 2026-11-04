@@ -41,3 +41,9 @@ Os quatro princípios editoriais são: “Nada quebrado, nada faltando, nada for
 `projects.js` contém o catálogo editorial `HOUSE_PROJECTS` (ambientes e projetos com IDs estáveis) e sua apresentação. As anotações e o ponto de retomada ficam na chave local `roarchela-projects-v1`, separada dos dados anteriores de missões, registros e agenda. O conteúdo está preparado para uma futura adaptação ao app, mas ainda não há integração ou sincronização.
 
 Verificação: `node --check projects.js`, `node --check app.js` e `node --test tools/*.test.cjs`, além da conferência no navegador de links, anotações após recarga e leitura ampliada no celular.
+
+## Ícone do celular
+
+O site inclui `manifest.webmanifest`, ícones PNG de 192 e 512 pixels, ícone Apple de 180 pixels e favicon de 32 pixels. O atalho se chama **Agenda de Casa** e inicia em `#ambientes`, com escopo restrito a este site. A abertura independente depende do suporte do navegador; não há promessa de funcionamento offline.
+
+Arte original do ícone: `assets/agenda-de-casa-icon.png`, criada com a ferramenta integrada de geração de imagens a partir da personagem existente, sem substituir a imagem do cabeçalho. Prompt: criar um ícone quadrado para a tela inicial de Agenda de Casa, preservando cabelo castanho com mecha fúcsia, óculos escuros e roupa violeta da personagem; retrato centralizado de cabeça e ombros, legível em tamanho pequeno, fundo lavanda claro opaco até as bordas, sem texto, moldura ou cantos arredondados externos, com margem para recorte pelo sistema do celular. Os demais tamanhos são reduções da arte selecionada.

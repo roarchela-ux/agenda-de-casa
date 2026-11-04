@@ -1,0 +1,26 @@
+{
+  "id": "./",
+  "name": "Agenda de Casa · Métodos de Rosely Archela",
+  "short_name": "Agenda de Casa",
+  "description": "Organização da casa com projetos por ambiente e os Métodos de Rosely Archela.",
+  "lang": "pt-BR",
+  "start_url": "./#ambientes",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#faf8f5",
+  "theme_color": "#75618b",
+  "icons": [
+    {
+      "src": "assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
