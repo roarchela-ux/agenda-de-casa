@@ -31,3 +31,13 @@ As 188 missões ficam nos bastidores do rodízio; não há navegação pública 
 - Links antigos de catálogo redirecionam para O método. Os arquivos editoriais continuam necessários ao funcionamento do rodízio, sem controle de acesso ou promessa de sigilo do conteúdo.
 
 Verificação do rodízio: `node --test tools/catalog.test.cjs`.
+
+## Ambientes e projetos
+
+A entrada do site apresenta projetos de organização por ambiente, disponíveis para desenvolver ao longo de dias ou semanas. A área inclui 12 ideias iniciais, entre elas closet, cantinho de leitura, estante, aparador e despensa. Os dias são referências de cuidado, sem bloquear o acesso aos projetos.
+
+Os quatro princípios editoriais são: “Nada quebrado, nada faltando, nada fora do lugar”; “O estoque está na loja”; o ciclo contínuo observar → escolher → testar → viver → ajustar; e organização como melhoria contínua. Cada projeto relaciona o ciclo ao uso real do espaço, sem percentual de conclusão ou prazo obrigatório.
+
+`projects.js` contém o catálogo editorial `HOUSE_PROJECTS` (ambientes e projetos com IDs estáveis) e sua apresentação. As anotações e o ponto de retomada ficam na chave local `roarchela-projects-v1`, separada dos dados anteriores de missões, registros e agenda. O conteúdo está preparado para uma futura adaptação ao app, mas ainda não há integração ou sincronização.
+
+Verificação: `node --check projects.js`, `node --check app.js` e `node --test tools/*.test.cjs`, além da conferência no navegador de links, anotações após recarga e leitura ampliada no celular.
