@@ -1,5 +1,5 @@
 'use strict';
-// Conteúdo editorial independente das missões; reutilizável no futuro aplicativo.
+// Conteúdo editorial independente das atividades; reutilizável no futuro aplicativo.
 window.HOUSE_PROJECTS = {
   "rooms": [
     {

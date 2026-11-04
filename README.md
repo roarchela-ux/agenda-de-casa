@@ -2,7 +2,7 @@
 
 Site independente com os Métodos da Roarchela: observar, escolher, testar, viver e ajustar.
 
-Abas: Hoje, Missão, Registros, A semana e O método. Inclui missões com cronômetro, registros editáveis, gráficos por ambiente, agenda semanal e três tamanhos de letra.
+Abas: Hoje, Atividade, Registros, A semana e O método. Inclui atividades com cronômetro, registros editáveis, gráficos por ambiente, agenda semanal e três tamanhos de letra.
 
 Os registros ficam apenas no navegador de cada pessoa. Não há conta nem sincronização entre aparelhos. Limpar os dados do navegador remove os registros.
 
@@ -14,20 +14,20 @@ Endereço esperado: https://roarchela-ux.github.io/agenda-de-casa/
 
 ## Catálogo do aplicativo
 
-O site inclui 188 missões da edição `guide-optimized-5-15-30-1.12`: 40 de 5 minutos, 108 de 15 e 40 de 30. O arquivo `catalog.js` contém apenas o conteúdo editorial necessário ao site, sem dados pessoais nem metadados privados das fontes. A exportação aplica as revisões editoriais na ordem das migrações 0015 a 0027, incluindo os 38 acréscimos de cuidados da casa toda.
+O site inclui 188 atividades da edição `guide-optimized-5-15-30-1.12`: 40 de 5 minutos, 108 de 15 e 40 de 30. O arquivo `catalog.js` contém apenas o conteúdo editorial necessário ao site, sem dados pessoais nem metadados privados das fontes. A exportação aplica as revisões editoriais na ordem das migrações 0015 a 0027, incluindo os 38 acréscimos de cuidados da casa toda.
 
 Para atualizar a partir do repositório do aplicativo, execute `python3 tools/import-catalog.py /caminho/para/metodos_da_ro`. O script valida quantidade, identificadores, ambientes, durações e orientações antes de gerar o arquivo.
 
-As missões escolhidas guardam uma cópia das orientações no navegador; novos catálogos não reescrevem um cuidado em andamento. Registros e planejamentos anteriores permanecem disponíveis.
+As atividades escolhidas guardam uma cópia das orientações no navegador; novos catálogos não reescrevem um cuidado em andamento. Registros e planejamentos anteriores permanecem disponíveis.
 
-## Missão do dia e rodízio semanal
+## Atividade do dia e rodízio semanal
 
-As 188 missões ficam nos bastidores do rodízio; não há navegação pública pelo catálogo. A aba O método indica **Métodos da RoArchela (app)**.
+As 188 atividades ficam nos bastidores do rodízio; não há navegação pública pelo catálogo. A aba O método indica **Métodos da RoArchela (app)**.
 
 - Segunda: sala; terça: cozinha e lavanderia (alternadas semanalmente); quarta: quartos; quinta: banheiros; sexta: escritório e vida financeira; sábado: áreas externas; domingo: família e passeios (ambiente Outro).
-- A recomendação é determinada pela data local, com semanas contadas a partir de 02/11/2026. Recarregar ou abrir uma missão não altera a sugestão daquele dia.
-- Cada ambiente intercala as durações disponíveis e percorre todas as suas missões antes de repetir. Todos os 188 cuidados participam do rodízio. A semana mostra as sugestões dos sete dias sem criar tarefas atrasadas.
-- É possível fazer a missão do dia ou acrescentar outros cuidados à agenda. Sugestões extras não alteram a recomendação do dia nem substituem um cuidado em andamento.
+- A recomendação é determinada pela data local, com semanas contadas a partir de 02/11/2026. Recarregar ou abrir uma atividade não altera a sugestão daquele dia.
+- Cada ambiente intercala as durações disponíveis e percorre todas as suas atividades antes de repetir. Todos os 188 cuidados participam do rodízio. A semana mostra as sugestões dos sete dias sem criar tarefas atrasadas.
+- É possível fazer a atividade do dia ou acrescentar outros cuidados à agenda. Sugestões extras não alteram a recomendação do dia nem substituem um cuidado em andamento.
 - Links antigos de catálogo redirecionam para O método. Os arquivos editoriais continuam necessários ao funcionamento do rodízio, sem controle de acesso ou promessa de sigilo do conteúdo.
 
 Verificação do rodízio: `node --test tools/catalog.test.cjs`.
@@ -38,7 +38,7 @@ A entrada do site apresenta projetos de organização por ambiente, disponíveis
 
 Os quatro princípios editoriais são: “Nada quebrado, nada faltando, nada fora do lugar”; “O estoque está na loja”; o ciclo contínuo observar → escolher → testar → viver → ajustar; e organização como melhoria contínua. Cada projeto relaciona o ciclo ao uso real do espaço, sem percentual de conclusão ou prazo obrigatório.
 
-`projects.js` contém o catálogo editorial `HOUSE_PROJECTS` (ambientes e projetos com IDs estáveis) e sua apresentação. As anotações e o ponto de retomada ficam na chave local `roarchela-projects-v1`, separada dos dados anteriores de missões, registros e agenda. O conteúdo está preparado para uma futura adaptação ao app, mas ainda não há integração ou sincronização.
+`projects.js` contém o catálogo editorial `HOUSE_PROJECTS` (ambientes e projetos com IDs estáveis) e sua apresentação. As anotações e o ponto de retomada ficam na chave local `roarchela-projects-v1`, separada dos dados anteriores de atividades, registros e agenda. O conteúdo está preparado para uma futura adaptação ao app, mas ainda não há integração ou sincronização.
 
 Verificação: `node --check projects.js`, `node --check app.js` e `node --test tools/*.test.cjs`, além da conferência no navegador de links, anotações após recarga e leitura ampliada no celular.
 
